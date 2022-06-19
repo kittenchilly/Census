@@ -133,30 +133,30 @@ namespace Census
 			realTownNPCsInfos = new List<TownNPCInfo>()
 			{
 				new TownNPCInfo(NPCID.Guide, "Always available, spawned on world generation"),
-				new TownNPCInfo(NPCID.Merchant, $"Have [i/s50:{ItemID.SilverCoin}] or more in inventory"),
-				new TownNPCInfo(NPCID.Nurse, "Have more than 100 HP and the Merchant present"),
-				new TownNPCInfo(NPCID.Demolitionist, "Have any explosive in inventory and the Merchant present"),
-				new TownNPCInfo(NPCID.DyeTrader, "Have a strange plant in inventory, or have any dye item in inventory after a boss has been defeated"),
-				new TownNPCInfo(NPCID.Angler, "Find at the ocean"),
+				new TownNPCInfo(NPCID.Merchant, $"Have [i/s50:{ItemID.SilverCoin}] in your inventory"),
+				new TownNPCInfo(NPCID.Nurse, "Have more than 100 HP and for the Merchant to have arrived"),
+				new TownNPCInfo(NPCID.Demolitionist, "Have an explosive in your inventory"),
+				new TownNPCInfo(NPCID.DyeTrader, "Find dye item and either defeat boss or find strange plant"),
+				new TownNPCInfo(NPCID.Angler, "Find on the ocean"),
 				new TownNPCInfo(NPCID.BestiaryGirl, "Fill at least 10% of the bestiary"),
-				new TownNPCInfo(NPCID.Dryad, "When any boss is defeated"),
-				new TownNPCInfo(NPCID.Painter, "Acquire 8 other townspeople"),
+				new TownNPCInfo(NPCID.Dryad, "Any boss has been defeated"),
+				new TownNPCInfo(NPCID.Painter, "Acquire 7 other townspeople"),
 				new TownNPCInfo(NPCID.Golfer, "Find in the underground desert"),
 				new TownNPCInfo(NPCID.ArmsDealer, "Have bullets or a gun in your inventory"),
-				new TownNPCInfo(NPCID.DD2Bartender, "When Eater of World or Brain of Cthulhu has been defeated, find in world"),
+				new TownNPCInfo(NPCID.DD2Bartender, "When Eater of World or Brain of Cthulhu has been defeated, found in world"),
 				new TownNPCInfo(NPCID.Stylist, "Find in a spider nest"),
-				new TownNPCInfo(NPCID.GoblinTinkerer, "Find in the cavern layer after a goblin invasion has been defeated"),
+				new TownNPCInfo(NPCID.GoblinTinkerer, "Find in the world after a goblin invasion has been defeated"),
 				new TownNPCInfo(NPCID.WitchDoctor, "When Queen Bee has been defeated"),
 				new TownNPCInfo(NPCID.Clothier, "When Skeletron has been defeated"),
 				new TownNPCInfo(NPCID.Mechanic, "Find in the dungeon"),
-				new TownNPCInfo(NPCID.PartyGirl, "1/40 chance after acquiring 14 other townspeople"),
+				new TownNPCInfo(NPCID.PartyGirl, "Acquire 14 other townspeople"),
 				new TownNPCInfo(NPCID.Wizard, "Find in the cavern layer in hardmode"),
 				new TownNPCInfo(NPCID.TaxCollector, $"In hardmode, purify tortured soul with [i:{ItemID.PurificationPowder}] in the underworld"),
 				new TownNPCInfo(NPCID.Truffle, "In hardmode, build a house in an above ground mushroom biome"),
 				new TownNPCInfo(NPCID.Pirate, "When a Pirate invasion has been defeated"),
-				new TownNPCInfo(NPCID.Steampunker, "When any Mechanical boss has been defeated"),
+				new TownNPCInfo(NPCID.Steampunker, "When a Mechanical boss has been defeated"),
 				new TownNPCInfo(NPCID.Cyborg, "When Plantera has been defeated"),
-				new TownNPCInfo(NPCID.SantaClaus, "When Frost Legion has been defeated, only during Christmas"),
+				new TownNPCInfo(NPCID.SantaClaus, "When Frost Legion has been defeated, only during December 15-31"),
 				new TownNPCInfo(NPCID.Princess, "Have all other town npcs in the world"),
 				new TownNPCInfo(NPCID.TownCat, $"Use [i:{ItemID.LicenseCat}]"),
 				new TownNPCInfo(NPCID.TownDog, $"Use [i:{ItemID.LicenseDog}]"),
@@ -371,27 +371,27 @@ namespace Census
 						//int startRow = total % perRow;
 						//int startCol = total / perRow;
 
-						int perColumn = UILinkPointNavigator.Shortcuts.NPCS_IconsPerColumn;
-						int startRow = total % perColumn;
-						int startCol = total / perColumn;
-
 						//Main.NewText(perRow);
-						int rowOffsetY = (int)(startRow * 56 * Main.inventoryScale);
-						int colOffsetX = startCol * -48;
+						//int rowOffsetY = (int)(startRow * 56 * Main.inventoryScale);
+						//int colOffsetX = startCol * -48;
+
+						int rowOffsetY = 0;
+						int colOffsetX = 0;
 
 						//foreach (var missingNPCType in canSpawns.Concat(cantSpawns))
 						//foreach ((int missingNPCType, string condition) in realTownNPCsInfos)
 						//for (int i = 1; i < Main.npcHeadTexture.Length; i++)
 
 						//c#7		//foreach ((int missingNPCType, string condition) in canSpawns.Concat(cantSpawns))
-						foreach (TownNPCInfo t in canSpawns.Concat(cantSpawns)) {
-							int missingNPCType = t.type;
-							string condition = t.conditions;
+						var allNotSpawned = canSpawns.Concat(cantSpawns).ToList();
+						for (drawCount = 0; drawCount < total + allNotSpawned.Count; drawCount++) {
+
+						//}
+						//foreach (TownNPCInfo t in canSpawns.Concat(cantSpawns)) {
 
 							//if (i == 21)
 							//	continue;
 
-							int i = NPC.TypeToDefaultHeadIndex(missingNPCType);
 
 							//int missingNPCType = NPC.HeadIndexToType(i);
 							//int missingNPCWhoAmI = 0;
@@ -416,7 +416,14 @@ namespace Census
 									drawX = Main.screenWidth - 64 - 28 + colOffsetX;
 									drawY = (int)(174 + mH + drawCount * 56 * Main.inventoryScale) + rowOffsetY;
 								}
-								if (Main.mouseX >= drawX && Main.mouseX <= drawX + TextureAssets.InventoryBack.Width() * Main.inventoryScale && Main.mouseY >= drawY && Main.mouseY <= drawY + TextureAssets.InventoryBack.Height() * Main.inventoryScale) {
+								if (drawCount < total)
+									continue;
+
+								TownNPCInfo t = allNotSpawned[drawCount - total];
+								int missingNPCType = t.type;
+								string condition = t.conditions;
+								int i = NPC.TypeToDefaultHeadIndex(missingNPCType);
+								if (Main.mouseX >= drawX && Main.mouseX <= drawX + TextureAssets.InventoryBack.Value.Width * Main.inventoryScale && Main.mouseY >= drawY && Main.mouseY <= drawY + TextureAssets.InventoryBack.Value.Height * Main.inventoryScale) {
 									Main.mouseText = true;
 									//text = Main.npc[missingNPCWhoAmI].FullName;
 									text = Lang.GetNPCNameValue(missingNPCType);
@@ -440,17 +447,17 @@ namespace Census
 								//	texture = Main.inventoryBack7Texture;
 								Texture2D texture = TextureAssets.InventoryBack7.Value;
 								Color white2 = Main.inventoryBack;
-								Main.spriteBatch.Draw(texture, new Vector2(drawX, drawY), null, white2, 0f, default(Vector2), Main.inventoryScale, SpriteEffects.None, 0f);
+								Main.spriteBatch.Draw(texture, new Vector2(drawX, drawY), new Rectangle(0, 0, TextureAssets.InventoryBack.Value.Width, TextureAssets.InventoryBack.Value.Height), white2, 0f, default(Vector2), Main.inventoryScale, SpriteEffects.None, 0f);
 								white = Color.White;
 								float scale = 1f;
-								float maxDimension = Math.Min(TextureAssets.NpcHead[i].Width(), TextureAssets.NpcHead[i].Height());
+								float maxDimension = Math.Min(TextureAssets.NpcHead[i].Value.Width, TextureAssets.NpcHead[i].Value.Height);
 								if (maxDimension > 36f)
 									scale = 36f / maxDimension;
-								Main.spriteBatch.Draw(TextureAssets.NpcHead[i].Value, new Vector2(drawX + 26f * Main.inventoryScale, drawY + 26f * Main.inventoryScale), null, white, 0f, new Vector2(TextureAssets.NpcHead[i].Width() / 2, (float)(TextureAssets.NpcHead[i].Height() / 2)), scale, SpriteEffects.None, 0f);
+								Main.spriteBatch.Draw(TextureAssets.NpcHead[i].Value, new Vector2(drawX + 26f * Main.inventoryScale, drawY + 26f * Main.inventoryScale), new Rectangle(0, 0, TextureAssets.NpcHead[i].Value.Width, TextureAssets.NpcHead[i].Value.Height), white, 0f, new Vector2(TextureAssets.NpcHead[i].Value.Width / 2, (float)(TextureAssets.NpcHead[i].Value.Height / 2)), scale, SpriteEffects.None, 0f);
 
 								ChatManager.DrawColorCodedStringWithShadow(Main.spriteBatch, FontAssets.ItemStack.Value, !Census.calculated ? "?" : Main.townNPCCanSpawn[missingNPCType] ? "✓" : "X", new Vector2(drawX + 26f * Main.inventoryScale, drawY + 26f * Main.inventoryScale) + new Vector2(6f, 6f), !Census.calculated ? Color.MediumPurple : Main.townNPCCanSpawn[missingNPCType] ? Color.LightGreen : Color.LightSalmon, 0f, Vector2.Zero, new Vector2(0.7f));
 
-								drawCount++;
+								//drawCount++;
 							}
 						}
 						hoverText = text;
